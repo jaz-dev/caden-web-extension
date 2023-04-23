@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+
+<body>
+  <div id="popup-content">
+    <div class="header">
+      <h1>Caden AI</h1>
+      <div class="header-btns">
+        <button id="feedback-btn" class="btn"><span>C</span></button>
+        <button id="close-btn" class="btn"><span>x</span></button>
+      </div>
+    </div>
+    <p>Highlight some text, provide extra context if needed, and press write. Caden shall craft the perfect response!</p>
+    <p class="label">Extra context:</p>
+    <div class="ellie">
+      <textarea class="ellies-thoughts" rows="2" maxlength="100"
+        placeholder="Provide any additional context i.e. 'keep it short' or 'give user promotional offer'"></textarea>
+      <span>Caden will try to include this information in the reply. Max 100
+        characters</span>
+
+      <button id="write-btn" class="ellies-status">Write ✏️</button>
+
+      <div id="done" class="hidden">
+        <pre id="reply" class="ellies-reply"></pre>
+        <p id="copy-reply" class="hidden"></p>
+        <hr />
+        <div class="copied">
+          <p>✔️ Copied to your clipboard</p>
+          <button id="copy-btn" class="btn">
+            <span>Copy again 📄</span>
+          </button>
+        </div>
+      </div>
+      <pre id="error" class="hidden ellies-error"></pre>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Caden AI",
+  "description": "Base Level Extension",
+  "permissions": ["storage", "declarativeContent", "activeTab", "scripting"],
+  "version": "1.0",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "hello_extensions.png"
+  }
+}
