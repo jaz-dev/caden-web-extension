@@ -43,8 +43,8 @@ body {
   position: relative;
   top: -1px;
 }
-.ellies-reply,
-.ellies-error {
+.cadens-reply,
+.cadens-error {
   font-size: 14px;
   font-family: "Gotham-Rounded", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
     "Open Sans", "Helvetica Neue", sans-serif;
@@ -75,67 +75,84 @@ body {
   color: red;
 }
 
-.ellie {
+.caden {
   display: flex;
   flex-direction: column;
 }
 
-.ellies-moods,
-.ellies-interest {
+.cadens-moods,
+.cadens-interest {
   display: flex;
 }
-.ellies-moods > button,
-.ellies-interest > button {
+.cadens-moods > button,
+.cadens-interest > button {
   flex: 1;
 }
 
-.ellies-interest {
+.cadens-interest {
   margin-top: 10px;
 }
 
-.ellies-moods > button,
-.ellies-interest > button,
-.ellies-status,
-.ellies-revise {
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cadens-moods > button,
+.cadens-interest > button,
+.cadens-status,
+.ask-btn,
+.cadens-revise {
   background: none;
   border: 1px solid #e1e3e1;
   cursor: pointer;
 }
 
-.ellies-moods > button,
-.ellies-interest > button {
+.ask-btn {
+  background-color: #E1F0F2;
+  width: 45%;
+}
+.cadens-status {
+  width: 45%;
+}
+
+.cadens-moods > button,
+.cadens-interest > button {
   border-left-width: 0;
   padding: 5px 8px 5px 5px;
 }
 
-.ellies-status,
-.ellies-revise {
+.cadens-status,
+.ask-btn,
+.cadens-revise {
   border-radius: 5px;
   margin-top: 10px;
   padding: 5px;
   text-align: center;
 }
 
-.ellies-moods > button:first-child,
-.ellies-interest > button:first-child {
+.cadens-moods > button:first-child,
+.cadens-interest > button:first-child {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   border-left-width: 1px;
 }
-.ellies-moods > button:last-child,
-.ellies-interest > button:last-child {
+.cadens-moods > button:last-child,
+.cadens-interest > button:last-child {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
 
-.ellies-thoughts {
+.cadens-thoughts {
   border-radius: 5px;
   border: 1px solid #e1e3e1;
   padding: 5px;
   font-family: "Gotham-Rounded", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
     "Open Sans", "Helvetica Neue", sans-serif;
 }
-.ellies-thoughts + span {
+.cadens-thoughts + span {
   font-size: 10px;
   opacity: 0.6;
   margin: 4px 0 0 0;
