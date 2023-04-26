@@ -37,7 +37,7 @@ body {
 #close-btn,
 #feedback-btn {
   width: 26px;
-  `-align: center;
+  text-align: center;
 }
 #close-btn > span {
   position: relative;
@@ -223,3 +223,103 @@ button[data-active="true"]:before {
 .hidden {
   display: none;
 }
+#signin-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.auth-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.label {
+  font-size: 0.75rem;
+  color: rgb(82 82 91);
+}
+
+.input, .passwordInput {
+  font-size: 1rem;
+  background-color: rgb(255 255 255);
+  border: none;
+  padding: 0;
+  border-bottom: 1px solid rgb(236 236 238);
+  margin: 0.75rem 0;
+  flex: 2
+}
+
+.passwordInput {
+  background-color: rgb(255 255 255);
+  border: none;
+}
+
+.input:focus, .passwordInput:focus {
+  outline: none;
+}
+
+.passwordFormGroup {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgb(236 236 238);
+}
+
+.formgroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.nameGroup{
+  display: flex;
+}
+
+.nameDiv{
+  display: flex;
+  flex-direction: column;
+  margin-right: 0.75rem;
+}
+
+.button{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.signup {
+  color: rgb(161 161 170)
+}
+
+.link-container{
+  margin-top: 2rem;
+}
+
+.signuplink {
+  font-weight: 600;
+  font-size: 1rem;
+  color: rgb(113 113 122);
+}
+
+.toggle-password {
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .aside {
+    display: block;
+  }
+  
+  .formgroup, .button{
+    width: 22rem;
+  }
+} 
