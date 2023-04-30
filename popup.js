@@ -1,5 +1,6 @@
 const RESPOND_TYPE = "write-btn";
-const ASK_TYPE = "ask-btn-id";
+const ASK_TYPE = "ask-btn";
+const URL = 'http://localhost:3001';
 
 function getText() {
     return window.getSelection().toString()
@@ -10,14 +11,19 @@ function normalize(e) {
 }
 
 function setStatus(e="waiting", id=RESPOND_TYPE, t=!0) {
-    const n = document.getElementById(id)
-    n.textContent = {
-        waiting: "Respond ✏️",
-        thinking: "🤔 Thinking...",
-        writing: "📝 Writing...",
-        revise: "Revise 🔄"
-    }[e];
-    t ? n.removeAttribute("disabled") : n.setAttribute("disabled", !0)
+    const p = document.getElementById(`${id}-p`);
+    const s = document.getElementById(`${id}-svg`);
+
+    if(p !== null){
+        p.textContent = {
+            waiting: "Respond",
+            thinking: "Thinking...",
+            writing: "Writing...",
+            revise: "Revise"
+        }[e];
+        e === 'writing' || e === 'thinking' ? s.classList.add("hidden") : s.classList.remove("hidden"); 
+        t ? p.removeAttribute("disabled") : p.setAttribute("disabled", !0);    
+    }        
 }
 
 
@@ -37,7 +43,6 @@ function setAuthStatus(status){
     authBtn.textContent = {
         default: "Sign In",
         loading: "Signing in...",
-        done: "Signed In",
     }[status]
 }
 
@@ -53,15 +58,44 @@ function isAuthenticated(callback) {
       }
     });
 }
-  
 
-function saveToken(token) {
-    chrome.storage.local.set({ "authToken": token }, function(){
-        //  Data's been saved boys and girls, go on home
-        console.log(token, 'stored');
+function getToken() {
+    return new Promise((resolve) => {
+        chrome.storage.local.get(["authToken", "id"], function(items) {
+            const authToken = items.authToken;
+            const id = items.id;
+            if (authToken && id) {
+                // Both authToken and id exist, so user is authenticated
+                resolve({ authToken, id });
+            } else {
+                // Either authToken or id does not exist, so user is not authenticated
+                resolve(false);
+            }
+        });
     });
 }
-
+function getUserId() {
+    return new Promise((resolve) => {
+      chrome.storage.local.get("id", function(items) {
+        const id = items.id;
+        if (id) {
+          // id exists, so user is authenticated
+          resolve(id);
+        } else {
+          // id does not exist, so user is not authenticated
+          resolve(false);
+        }
+      });
+    });
+} 
+function saveToken(token, id) {
+    chrome.storage.local.set({ 
+        "authToken": token,
+        "id": id
+    }, function(){
+        // Data's been saved boys and girls, go on home
+    });
+}
 async function signIn() {
     const email = document.querySelector('#email-input');
     const password = document.querySelector("#password");
@@ -72,7 +106,7 @@ async function signIn() {
     };
 
     try {
-        const response = await fetch('http://localhost:3001/auth/login', {
+        const response = await fetch(`${URL}/auth/login`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'
@@ -89,12 +123,10 @@ async function signIn() {
 
 function signOut(callback) {
     // Remove the authToken from local storage
-    chrome.storage.local.remove("authToken", function() {
+    chrome.storage.local.remove(["authToken", "id"], function() {
         callback();
     });
 }
-
-
 function copyToClipboard(e) {
     const t = document.createElement("textarea");
     t.value = e,
@@ -107,15 +139,27 @@ function copyToClipboard(e) {
     document.body.removeChild(t)
 }
 
-async function fetchResponse (text) {
+async function fetchResponse (text, content="") {
+    let email;
+    if(content.length>0){
+        email = `${text}, ${content}`
+    } else {
+        email = text;
+    }
     try {
         setStatus("writing", RESPOND_TYPE , !1)
-        const response = await fetch('http://localhost:3001/write/', {
+        const user = await getToken();
+        const body = {
+            email,
+            id: user.id
+        }
+        const response = await fetch(`${URL}/write/`, {
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': user.authToken
             },
-            body: JSON.stringify({ email: text })
+            body: JSON.stringify( body )
         });
         const data = await response.json();
         return data.data.output;
@@ -127,12 +171,18 @@ async function fetchResponse (text) {
 async function fetchGPTResponse (text) {
     try {
         setStatus("writing", ASK_TYPE, !1)
-        const response = await fetch('http://localhost:3001/write/', {
+        const user = await getToken();
+        const body = {
+            email: text,
+            id: user.id
+        }
+        const response = await fetch(`${URL}/write/gpt`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': user.authToken
         },
-        body: JSON.stringify({ email: text })
+        body: JSON.stringify(body)
       });
       const data = await response.json();
       return data.data.output;
@@ -141,25 +191,46 @@ async function fetchGPTResponse (text) {
     }
 };
 
-"undefined" != typeof chrome ? "undefined" != typeof browser ? (console.log("Caden is running in browser: Firefox"),
-chrome = browser) : console.log("Caden is running in browser: Chrome") : console.log("Caden is running in browser: unsupported"),
-document.getElementById("close-btn").addEventListener("click", (e=>window.close())),
-document.getElementById("toggle-btn").addEventListener("click", (e => {
-    const passwordInput = document.querySelector('#password');
-    const toggleButton = document.querySelector('#toggle-btn');
-
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        toggleButton.textContent = 'Hide';
-    } else {
-        passwordInput.type = 'password';
-        toggleButton.textContent = 'Show';
+async function handleSignIn (e) {
+    e.preventDefault();
+    setAuthStatus("loading");
+    try {
+        const data = await signIn();
+        if(data.success){
+            setAuthStatus("default");
+            saveToken(data.data.token.token, data.data.id);
+            showAuthenticatedContent();
+        } else {
+            setAuthError(data.error.message);
+            setAuthStatus("default");
+        }
+    } catch(err) {
+        console.error(err);
+        setAuthError(data.error.message);
     }
-}))
-document.getElementById("write-btn").addEventListener("click", (async e=>{
+}
+async function handleSignOut (e) {
+    try {
+        signOut(()=> showUnAuthenticatedContent());
+    } catch(err) {
+        console.error("something went wrong")
+    }
+}
+async function handleCopyResponse (e) {
+    const t = document.getElementById("copy-reply").textContent;
+    setTimeout((()=>{
+        document.getElementById("copy-btn").textContent = "Copy 📄"
+    }
+    ), 3e3),
+    copyToClipboard(t),
+    document.getElementById("copy-btn").textContent = "Copied!"
+};
+async function handleEmailResponse (e) {
     try {
         setError(""),
         setStatus("thinking", !1);
+        const textarea = document.getElementById("gpt-context");
+        const content = textarea.value;
         const e = (await chrome.tabs.query({
             active: !0,
             currentWindow: !0
@@ -171,11 +242,12 @@ document.getElementById("write-btn").addEventListener("click", (async e=>{
             func: getText
         })
           , n = t ? t.result : "";
-        if (!n)
+        if (!n){
             return setError("You haven't selected any text! Highlight some text on the page to give Caden context for the reply. This works best if it's email content!"),
             void setStatus("waiting", RESPOND_TYPE, !0);
+        }
         // call api
-        const text = await fetchResponse(t.result)
+        const text = await fetchResponse(t.result, content)
 
         // text = data;
         normalize(text);
@@ -191,8 +263,7 @@ document.getElementById("write-btn").addEventListener("click", (async e=>{
         setStatus("waiting", RESPOND_TYPE, !0)
     }
 }
-)),
-document.getElementById("ask-btn-id").addEventListener("click", (async e=>{
+async function handleAskGPT (e) {
     try {
         setError(""),
         setStatus("thinking", ASK_TYPE, !1);
@@ -210,51 +281,33 @@ document.getElementById("ask-btn-id").addEventListener("click", (async e=>{
         document.getElementById("reply").textContent = text,
         document.getElementById("copy-reply").textContent = text,
         copyToClipboard(text))
-        
     } catch (e) {
         console.error(e),
         document.getElementById("error").textContent = "Something went wrong, please try again!",
         setStatus("waiting", ASK_TYPE, !0)
     }
 }
-)),
-document.getElementById("copy-btn").addEventListener("click", (e=>{
-    const t = document.getElementById("copy-reply").textContent;
-    setTimeout((()=>{
-        document.getElementById("copy-btn").textContent = "Copy 📄"
-    }
-    ), 3e3),
-    copyToClipboard(t),
-    document.getElementById("copy-btn").textContent = "Copied!"
-}
-))
-document.getElementById("signin-btn").addEventListener("click", (async e => {
-    e.preventDefault();
-    setAuthStatus("loading");
-    try {
-        const data = await signIn();
-        if(data.success){
-            setAuthStatus("done");
-            saveToken(data.data.token.token);
-            showAuthenticatedContent();
-        }else{
-            setAuthError(data.error.message);
-            setAuthStatus("default");
-        }
-    } catch(err) {
-        console.error(err);
-        setAuthError(data.error.message);
-    }
-}
-))
-document.getElementById("signout-btn").addEventListener("click", (async e => {
-    try {
-        signOut(()=> showUnAuthenticatedContent());
-    } catch(err) {
+"undefined" != typeof chrome ? "undefined" != typeof browser ? (console.log("Caden is running in browser: Firefox"),
+chrome = browser) : console.log("Caden is running in browser: Chrome") : console.log("Caden is running in browser: unsupported"),
+document.getElementById("close-btn").addEventListener("click", (e=>window.close())),
+document.getElementById("toggle-btn").addEventListener("click", (e => {
+    const passwordInput = document.querySelector('#password');
+    const toggleButton = document.querySelector('#toggle-btn');
 
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleButton.textContent = 'Hide';
+    } else {
+        passwordInput.type = 'password';
+        toggleButton.textContent = 'Show';
     }
-}
-))
+}))
+document.getElementById("write-btn").addEventListener("click", handleEmailResponse),
+document.getElementById("ask-btn-id").addEventListener("click", handleAskGPT),
+document.getElementById("copy-btn").addEventListener("click", handleCopyResponse)
+document.querySelector('.form').addEventListener('submit', handleSignIn);
+document.getElementById("signin-btn").addEventListener("click", handleSignIn);
+document.getElementById("signout-btn").addEventListener("click", handleSignOut)
 const authenticatedContent = document.querySelector('#caden-body');
 const unauthenticatedContent = document.querySelector('#signin-page');
 
@@ -263,13 +316,16 @@ const unauthenticatedContent = document.querySelector('#signin-page');
 function showAuthenticatedContent () {
     authenticatedContent.style.display = 'block';
     unauthenticatedContent.style.display = 'none';
+    const signOutBtn = document.getElementById("signout-btn");
+    signOutBtn.classList.remove("hidden")
 }
 function showUnAuthenticatedContent () {
     authenticatedContent.style.display = 'none';
     unauthenticatedContent.style.display = 'block';
+    const signOutBtn = document.getElementById("signout-btn");
+    signOutBtn.classList.add("hidden")
 }
 isAuthenticated((isAuth)=>{
-    console.log('isauth: ', isAuth)
     if (isAuth) {
         // User is authenticated, so show the authenticated content
         showAuthenticatedContent();

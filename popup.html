@@ -5,6 +5,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="popup.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -12,24 +16,39 @@
     <div class="header">
       <h1>Caden AI</h1>
       <div class="header-btns">
-        <button id="signout-btn" class="btn"><span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 13H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h1M10 11l3-3-3-3M12.5 8H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
-        </svg></span></button>
-        <button id="close-btn" class="btn"><span>x</span></button>
+        <div id="signout-btn" class="btn hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 96 960 960" width="16">
+            <path d="M613 747q-11-13-11-29.5t11-27.5l74-74H400q-17 0-28.5-11.5T360 576q0-17 11.5-28.5T400 536h287l-74-74q-12-12-12-28.5t12-28.5q11-12 27.5-12t27.5 11l144 144q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L668 748q-13 13-28.5 11.5T613 747ZM200 936q-33 0-56.5-23.5T120 856V296q0-33 23.5-56.5T200 216h240q17 0 28.5 11.5T480 256q0 17-11.5 28.5T440 296H200v560h240q17 0 28.5 11.5T480 896q0 17-11.5 28.5T440 936H200Z"/>
+          </svg>
+        </div>
+        <div id="close-btn" class="btn">
+          <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 96 960 960" width="16">
+            <path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"/>
+          </svg>          
+        </div>
       </div>
     </div>
     <div id="caden-body">
-      <p>Highlight some text, provide extra context if needed, and press write. Caden shall craft the perfect response!</p>
-      <p class="label">Extra context:</p>
+      <p>Simply highlight the text you want to respond to, add any extra context if necessary, and click 'Respond'. Caden will take care of crafting the perfect response for you!</p>
+      <p class="label">Extra Context / Question for GPT:</p>
       <div class="caden">
-        <textarea id="gpt-context" class="cadens-thoughts" rows="2" maxlength="100"
-          placeholder="Provide any additional context i.e. 'keep it short' or 'give user promotional offer'"></textarea>
-        <span>Caden will try to include this information in the reply. Max 100
+        <textarea id="gpt-context" class="cadens-thoughts" rows="2" maxlength="500"
+          placeholder= "To add extra context to your email response, click the 'Respond' button and type in this area. You can also ask GPT a question by clicking the 'Ask GPT' button and typing here."></textarea>
+        <span>Caden will try to include this information in the reply. Max 500
           characters</span>
-
         <div class="buttons-container">
-          <button id="write-btn" class="cadens-status">Respond ✏️</button>
-          <button id="ask-btn-id" class="ask-btn">Ask GPT ✏️</button>
+          <div id="write-btn" class="cadens-status">
+            <p id="write-btn-p">Respond</p>
+            <svg class=" " id="write-btn-svg" xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 96 960 960" width="16">
+              <path d="M800 856q-17 0-28.5-11.5T760 816V696q0-50-35-85t-85-35H272l117 117q11 11 11 27t-12 28q-11 11-28 11t-28-11L148 564q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l185-185q11-11 27-11t28 12q11 11 11 28t-11 28L272 496h368q83 0 141.5 58.5T840 696v120q0 17-11.5 28.5T800 856Z"/>
+            </svg>
+          </div>
+          <div id="ask-btn-id" class="ask-btn">
+            <p id="ask-btn-p">Ask GPT </p>
+            <svg class=" " id="ask-btn-svg" xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 96 960 960" width="16">
+              <path d="M478 768q21 0 35.5-14.5T528 718q0-21-14.5-35.5T478 668q-21 0-35.5 14.5T428 718q0 21 14.5 35.5T478 768Zm40-188q3-16 10.5-28t29.5-34q37-37 50-60t13-52q0-51-37.5-84.5T489 288q-43 0-76.5 17.5T361 352q-9 14-5 29.5t18 21.5q14 6 27.5.5T423 385q10-14 27-21.5t35-7.5q28 0 45 15t17 38q0 19-11.5 38T500 487q-26 23-40 47t-14 45q0 14 10.5 24t25.5 10q14 0 23.5-9.5T518 580Zm-66 408-92-92H200q-33 0-56.5-23.5T120 816V256q0-33 23.5-56.5T200 176h560q33 0 56.5 23.5T840 256v560q0 33-23.5 56.5T760 896H600l-92 92q-11 11-28 11t-28-11ZM200 816h192l88 88 88-88h192V256H200v560Zm0-560v560-560Z" fill="#e1e3e1"/>
+            </svg>
+          </div>
         </div>
         <div id="done" class="hidden">
           <pre id="reply" class="cadens-reply"></pre>
@@ -37,9 +56,12 @@
           <hr />
           <div class="copied">
             <p>✔️ Copied to your clipboard</p>
-            <button id="copy-btn" class="btn">
-              <span>Copy again 📄</span>
-            </button>
+            <div id="copy-btn" class="copy-btn-cl">
+              <p>Copy Again</p>
+              <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 96 960 960" width="16">
+                <path d="M200 976q-33 0-56.5-23.5T120 896V376q0-17 11.5-28.5T160 336q17 0 28.5 11.5T200 376v520h400q17 0 28.5 11.5T640 936q0 17-11.5 28.5T600 976H200Zm160-160q-33 0-56.5-23.5T280 736V256q0-33 23.5-56.5T360 176h360q33 0 56.5 23.5T800 256v480q0 33-23.5 56.5T720 816H360Zm0-80h360V256H360v480Zm0 0V256v480Z" transform="scale(0.66667) translate(12 72)"></path>
+              </svg>              
+            </div>
           </div>
         </div>
         <pre id="error" class="hidden cadens-error"></pre>
@@ -59,13 +81,12 @@
               <p id="toggle-btn"class="toggle-password">Show</p>
             </div>
           </div>
-          <button class="button" id="signin-btn" >
-            <span class="icon">
-              <span class="spinner"></span>
-              <span class="signInIcon"></span>
-            </span>
-            <span class="text">Sign In</span>
-          </button>
+          <div class="signin-btn-cl" id="signin-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 96 960 960" width="16">
+              <path d="M373 747q-11-13-11-29.5t11-27.5l74-74H160q-17 0-28.5-11.5T120 576q0-17 11.5-28.5T160 536h287l-74-74q-12-12-12-28.5t12-28.5q11-12 27.5-12t27.5 11l144 144q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L428 748q-12 12-28 11t-27-12Zm147 189q-17 0-28.5-11.5T480 896q0-17 11.5-28.5T520 856h240V296H520q-17 0-28.5-11.5T480 256q0-17 11.5-28.5T520 216h240q33 0 56.5 23.5T840 296v560q0 33-23.5 56.5T760 936H520Z"/>
+            </svg>            
+            <p>Sign In</p>
+          </div>
         </form>
       </div>
       <div class="link-container">

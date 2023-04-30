@@ -1,11 +1,17 @@
 {
-  "manifest_version": 3,
   "name": "Caden AI",
-  "description": "Base Level Extension",
+  "description": "Extension for the caden ai assistant.",
   "permissions": ["storage", "declarativeContent", "activeTab", "scripting"],
-  "version": "1.0",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "icons": {
+    "48": "assets/48.png",
+    "72": "assets/72.png",
+    "96": "assets/96.png",
+    "144": "assets/144.png"
+  },
   "action": {
     "default_popup": "popup.html",
-    "default_icon": "hello_extensions.png"
+    "default_icon": "caden_logo.png"
   }
 }
