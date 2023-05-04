@@ -4,8 +4,6 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Lato', sans-serif;
-  /* font-family: "Gotham-Rounded", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-    "Open Sans", "Helvetica Neue", sans-serif; */
   font-size: 14px;
 }
 
@@ -73,8 +71,7 @@ body {
 .cadens-reply,
 .cadens-error {
   font-size: 14px;
-  font-family: "Gotham-Rounded", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-    "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: 'Lato', sans-serif;
   width: 100%;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -261,6 +258,7 @@ button[data-active="true"]:before {
 
 .hidden {
   display: none;
+  font-family: 'Lato', sans-serif;
 }
 #signin-page {
   display: flex;

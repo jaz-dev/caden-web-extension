@@ -1,6 +1,6 @@
 const RESPOND_TYPE = "write-btn";
 const ASK_TYPE = "ask-btn";
-const URL = 'http://localhost:3001';
+const URL = 'https://caden-server.herokuapp.com';
 
 function getText() {
     return window.getSelection().toString()
@@ -16,7 +16,7 @@ function setStatus(e="waiting", id=RESPOND_TYPE, t=!0) {
 
     if(p !== null){
         p.textContent = {
-            waiting: "Respond",
+            waiting: id === RESPOND_TYPE ? "Respond" : "Ask GPT",
             thinking: "Thinking...",
             writing: "Writing...",
             revise: "Revise"
@@ -74,20 +74,6 @@ function getToken() {
         });
     });
 }
-function getUserId() {
-    return new Promise((resolve) => {
-      chrome.storage.local.get("id", function(items) {
-        const id = items.id;
-        if (id) {
-          // id exists, so user is authenticated
-          resolve(id);
-        } else {
-          // id does not exist, so user is not authenticated
-          resolve(false);
-        }
-      });
-    });
-} 
 function saveToken(token, id) {
     chrome.storage.local.set({ 
         "authToken": token,
@@ -161,6 +147,10 @@ async function fetchResponse (text, content="") {
             },
             body: JSON.stringify( body )
         });
+        if(response.status === 401) { //if the token is unauthorized at moment of request
+            showUnAuthenticatedContent() //force a log out;
+            return
+          }
         const data = await response.json();
         return data.data.output;
     } catch (error) {
@@ -184,6 +174,10 @@ async function fetchGPTResponse (text) {
         },
         body: JSON.stringify(body)
       });
+      if(response.status === 401) { //if the token is unauthorized at moment of request
+        showUnAuthenticatedContent() //force a log out;
+        return
+      }
       const data = await response.json();
       return data.data.output;
     } catch (error) {
