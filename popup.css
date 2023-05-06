@@ -63,6 +63,7 @@ body {
 #feedback-btn {
   width: 26px;
   text-align: center;
+  background-color: red;
 }
 #close-btn > span {
   position: relative;
@@ -360,3 +361,12 @@ button[data-active="true"]:before {
     width: 22rem;
   }
 } 
+
+.highlight-div{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3rem;
+  color: white;
+  border-radius: 5;
+}

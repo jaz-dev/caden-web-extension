@@ -1,6 +1,7 @@
 const RESPOND_TYPE = "write-btn";
 const ASK_TYPE = "ask-btn";
-const URL = 'https://caden-server.herokuapp.com';
+const URL = 'http://localhost:3001';
+// const URL = 'https://caden-server.herokuapp.com';
 
 function getText() {
     return window.getSelection().toString()
@@ -13,7 +14,6 @@ function normalize(e) {
 function setStatus(e="waiting", id=RESPOND_TYPE, t=!0) {
     const p = document.getElementById(`${id}-p`);
     const s = document.getElementById(`${id}-svg`);
-
     if(p !== null){
         p.textContent = {
             waiting: id === RESPOND_TYPE ? "Respond" : "Ask GPT",
@@ -328,3 +328,36 @@ isAuthenticated((isAuth)=>{
         showUnAuthenticatedContent();
     }
 })
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.selectedText) {
+        var selectedText = document.getElementById("selectedText");
+        // rest of your code to display the pop-up div with selected text
+        console.log('selected: ', selectedText)
+    }
+});
+ 
+// // Create the div element
+// const popupDiv = document.createElement('div');
+// popupDiv.style.position = 'fixed';
+// popupDiv.style.top = '50px';
+// popupDiv.style.right = '50px';
+// popupDiv.style.backgroundColor = '#e0e0e0';
+// popupDiv.style.border = '1px solid #000';
+// popupDiv.style.padding = '10px';
+// popupDiv.style.display = 'none';
+
+// // Add the div to the body element
+// document.body.appendChild(popupDiv);
+
+// // Listen for text selection events
+// document.addEventListener('mouseup', (event) => {
+//   const selectedText = window.getSelection().toString();
+//   if (selectedText.length > 0) {
+//     // Show the popup div
+//     popupDiv.style.display = 'block';
+//     popupDiv.textContent = `You selected: ${selectedText}`;
+//   } else {
+//     // Hide the popup div if no text is selected
+//     popupDiv.style.display = 'none';
+//   }
+// });
