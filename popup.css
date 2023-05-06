@@ -3,8 +3,7 @@ body {
   width: 420px;
   margin: 0;
   padding: 0;
-  font-family: "Gotham-Rounded", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-    "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: 'Lato', sans-serif;
   font-size: 14px;
 }
 
@@ -22,32 +21,57 @@ body {
   line-height: 28px;
   margin: 0;
 }
+.header-btns{
+  display: flex;
+  gap: .5rem;
+}
 .btn {
   background: none;
   border: 1px solid #e1e3e1;
-  line-height: 28px;
-  height: 30px;
+  height: 2.5rem;
+  width: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   border-radius: 5px;
 }
 .btn:hover {
   background-color: #eeeeee;
 }
+.copy-btn-cl, .signin-btn-cl{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+  height: 2.5rem;
+  background: none;
+  border-radius: 5px;
+  border: 1px solid #e1e3e1;
+  padding: 0 .5rem;
+  color: #000;
+  cursor: pointer;
+}
+.signin-btn-cl {
+  width: 100%;
+}
+.copy-btn-cl:hover, .signin-btn-cl:hover {
+  background-color: #eeeeee;
+}
 
 #close-btn,
 #feedback-btn {
   width: 26px;
-  `-align: center;
+  text-align: center;
 }
 #close-btn > span {
   position: relative;
   top: -1px;
 }
-.ellies-reply,
-.ellies-error {
+.cadens-reply,
+.cadens-error {
   font-size: 14px;
-  font-family: "Gotham-Rounded", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-    "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: 'Lato', sans-serif;
   width: 100%;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -60,7 +84,7 @@ body {
   justify-content: space-between;
   font-size: 12px;
 }
-.copied p {
+.copied > p {
   color: green;
   font-weight: bold;
 }
@@ -75,67 +99,96 @@ body {
   color: red;
 }
 
-.ellie {
+.caden {
   display: flex;
   flex-direction: column;
 }
 
-.ellies-moods,
-.ellies-interest {
+.cadens-moods,
+.cadens-interest {
   display: flex;
 }
-.ellies-moods > button,
-.ellies-interest > button {
+.cadens-moods > button,
+.cadens-interest > button {
   flex: 1;
 }
 
-.ellies-interest {
+.cadens-interest {
   margin-top: 10px;
 }
 
-.ellies-moods > button,
-.ellies-interest > button,
-.ellies-status,
-.ellies-revise {
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cadens-moods > button,
+.cadens-interest > button,
+.cadens-status,
+.cadens-revise {
   background: none;
   border: 1px solid #e1e3e1;
   cursor: pointer;
 }
 
-.ellies-moods > button,
-.ellies-interest > button {
+.ask-btn {
+  background-color: #8D4BF6;
+  width: 45%;
+  height: 2.5rem;
+  color: #e1e3e1;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+}
+.cadens-status {
+  width: 45%;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+}
+
+.cadens-moods > button,
+.cadens-interest > button {
   border-left-width: 0;
   padding: 5px 8px 5px 5px;
 }
 
-.ellies-status,
-.ellies-revise {
+.cadens-status,
+.ask-btn,
+.cadens-revise {
   border-radius: 5px;
   margin-top: 10px;
   padding: 5px;
   text-align: center;
 }
 
-.ellies-moods > button:first-child,
-.ellies-interest > button:first-child {
+.cadens-moods > button:first-child,
+.cadens-interest > button:first-child {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   border-left-width: 1px;
 }
-.ellies-moods > button:last-child,
-.ellies-interest > button:last-child {
+.cadens-moods > button:last-child,
+.cadens-interest > button:last-child {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
 
-.ellies-thoughts {
+.cadens-thoughts {
   border-radius: 5px;
   border: 1px solid #e1e3e1;
   padding: 5px;
-  font-family: "Gotham-Rounded", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-    "Open Sans", "Helvetica Neue", sans-serif;
+  min-height: 3.5rem;
+  font-family: inherit;
 }
-.ellies-thoughts + span {
+.cadens-thoughts + span {
   font-size: 10px;
   opacity: 0.6;
   margin: 4px 0 0 0;
@@ -205,4 +258,105 @@ button[data-active="true"]:before {
 
 .hidden {
   display: none;
+  font-family: 'Lato', sans-serif;
 }
+#signin-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.auth-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.label {
+  font-size: 0.75rem;
+  color: rgb(82 82 91);
+}
+
+.input, .passwordInput {
+  font-size: 1rem;
+  background-color: rgb(255 255 255);
+  border: none;
+  padding: 0;
+  border-bottom: 1px solid rgb(236 236 238);
+  margin: 0.75rem 0;
+  flex: 2
+}
+
+.passwordInput {
+  background-color: rgb(255 255 255);
+  border: none;
+}
+
+.input:focus, .passwordInput:focus {
+  outline: none;
+}
+
+.passwordFormGroup {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgb(236 236 238);
+}
+
+.formgroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.nameGroup{
+  display: flex;
+}
+
+.nameDiv{
+  display: flex;
+  flex-direction: column;
+  margin-right: 0.75rem;
+}
+
+.button{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.signup {
+  color: rgb(161 161 170)
+}
+
+.link-container{
+  margin-top: 2rem;
+}
+
+.signuplink {
+  font-weight: 600;
+  font-size: 1rem;
+  color: rgb(113 113 122);
+}
+
+.toggle-password {
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .aside {
+    display: block;
+  }
+  
+  .formgroup, .button{
+    width: 22rem;
+  }
+} 
