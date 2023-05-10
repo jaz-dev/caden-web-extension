@@ -213,7 +213,10 @@ async function handleSignOut (e) {
 async function handleCopyResponse (e) {
     const t = document.getElementById("copy-reply").textContent;
     setTimeout((()=>{
-        document.getElementById("copy-btn").textContent = "Copy 📄"
+        document.getElementById("copy-btn").innerHTML = `<p>Copy Again</p>
+            <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 96 960 960" width="16">
+            <path d="M200 976q-33 0-56.5-23.5T120 896V376q0-17 11.5-28.5T160 336q17 0 28.5 11.5T200 376v520h400q17 0 28.5 11.5T640 936q0 17-11.5 28.5T600 976H200Zm160-160q-33 0-56.5-23.5T280 736V256q0-33 23.5-56.5T360 176h360q33 0 56.5 23.5T800 256v480q0 33-23.5 56.5T720 816H360Zm0-80h360V256H360v480Zm0 0V256v480Z" transform="scale(0.66667) translate(12 72)"></path>
+            </svg>`
     }
     ), 3e3),
     copyToClipboard(t),
@@ -335,29 +338,3 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         console.log('selected: ', selectedText)
     }
 });
- 
-// // Create the div element
-// const popupDiv = document.createElement('div');
-// popupDiv.style.position = 'fixed';
-// popupDiv.style.top = '50px';
-// popupDiv.style.right = '50px';
-// popupDiv.style.backgroundColor = '#e0e0e0';
-// popupDiv.style.border = '1px solid #000';
-// popupDiv.style.padding = '10px';
-// popupDiv.style.display = 'none';
-
-// // Add the div to the body element
-// document.body.appendChild(popupDiv);
-
-// // Listen for text selection events
-// document.addEventListener('mouseup', (event) => {
-//   const selectedText = window.getSelection().toString();
-//   if (selectedText.length > 0) {
-//     // Show the popup div
-//     popupDiv.style.display = 'block';
-//     popupDiv.textContent = `You selected: ${selectedText}`;
-//   } else {
-//     // Hide the popup div if no text is selected
-//     popupDiv.style.display = 'none';
-//   }
-// });
