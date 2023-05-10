@@ -1,7 +1,7 @@
 const RESPOND_TYPE = "write-btn";
 const ASK_TYPE = "ask-btn";
-// const URL = 'http://localhost:3001';
-const URL = 'https://caden-server.herokuapp.com';
+const URL = 'http://localhost:3001';
+// const URL = 'https://caden-server.herokuapp.com';
 
 function getText() {
     return window.getSelection().toString()

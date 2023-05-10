@@ -1,12 +1,17 @@
-console.log('content script loaded');
-// const URL = 'http://localhost:3001';
+console.log('caden ai content script loaded');
+// // const URL = 'http://localhost:3001';
 const URL = 'https://caden-server.herokuapp.com';
 
-function getSelectedHtml() {
-  var range = window.getSelection().getRangeAt(0);
-  var container = document.createElement("div");
-  container.appendChild(range.cloneContents());
-  return container.innerHTML;
+function copyToClipboard(e) {
+  const t = document.createElement("textarea");
+  t.value = e,
+  t.setAttribute("readonly", ""),
+  t.style.position = "absolute",
+  t.style.left = "-9999px",
+  document.body.appendChild(t),
+  t.select(),
+  document.execCommand("copy"),
+  document.body.removeChild(t)
 }
 
 function removeDiv(event) {
@@ -128,186 +133,181 @@ async function handleSubmitRequest(e, data) {
       appendDiv("respond", text);
     }
 }
-function handleMouseUp(event) {
-  var selectedText = window.getSelection().toString();
-  var range = window.getSelection().getRangeAt(0);
+async function handleMouseUp(event) {
+  await isAuthenticated()
+  .then(result => {
+    if(result){
+      var selectedText = window.getSelection().toString();
+      var range = window.getSelection().getRangeAt(0);
 
-  if (range && range.commonAncestorContainer) {
-    const parentElement = range.commonAncestorContainer.parentElement;
+      if (range && range.commonAncestorContainer) {
+        const parentElement = range.commonAncestorContainer.parentElement;
 
-    var rect = range.getBoundingClientRect();
+        var rect = range.getBoundingClientRect();
 
-    const isClickInside = parentElement.contains(event.target);
+        const isClickInside = parentElement.contains(event.target);
 
-    if (selectedText !== "" && isClickInside) {
-      // Rest of your code...
+        if (selectedText !== "" && isClickInside) {
+          // Rest of your code...
 
-      if (selectedText !== "" && isClickInside) {
-        const div = document.getElementById("added-div");
-    
-        div.style.display = "flex";
-        div.style.position = "absolute";
-        div.style.top = rect.bottom + "px";
-        div.style.left = rect.left + "px";
-        div.style.position = "absolute";
-        div.style.color = '#27272A';
-        div.style.borderRadius = '5px';
-        div.style.alignItems = 'center';
-        div.style.height = "60px";
-        div.style.width = "580px"
-        div.style.zIndex = 10;
-        div.style.backgroundColor = '#F4F5F8';
-        div.style.fontFamily = 'Lato, sans-serif';
-    
-    
-        div.innerHTML = `
-          <div id="inner-div">
-            <button type="button" role="combobox" aria-controls="radix-:rr:" aria-expanded="false" aria-autocomplete="none" dir="ltr" data-state="closed" class="select_triger div-btn">
-              <select name="requests" id="request-type">
-                <option value="upload">Upload</option>
-                <option value="respond">Respond</option>
-              </select>
-            </button>
-            <form id="query-form">
-              <input type="text" id="tool-input" placeholder="Add a title/subject of the email" required>
-              </input>
-              <input type="submit" id="submit-btn" class="div-btn" value="Save Email as Template">
-            </form>
-            <div id="close-btn" class="div-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 96 960 960" width="16">
-                <path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"/>
-              </svg>          
-            </div>
-          </div>`;
+          if (selectedText !== "" && isClickInside) {
+            const div = document.getElementById("added-div");
         
-        div.addEventListener("mouseup", function (event) {
-          event.stopPropagation();
-        });
-        const innerDiv = document.getElementById("inner-div");
-        innerDiv.style.display = "flex";
-        innerDiv.style.justifyContent = 'space-between';
-        innerDiv.style.alignItems = 'center';
-        innerDiv.style.gap = "1rem";
-        innerDiv.style.padding = '.5rem';
-    
-        const select = document.getElementById("request-type");
-    
-        select.style.border = "none";
-        select.style.height = '44px';
-        select.style.borderRadius = ".5rem";
-        select.style.padding = "0 0.5rem";
-        select.style.fontWeight = '500';
-        select.addEventListener('focus', () => {
-          // Set the "outline" property of the focused input element to "none"
-          select.style.outline = 'none';
-        });
-        select.addEventListener('mouseenter', ()=>{
-          select.style.backgroundColor = '#D9D9D9';
-        })
-        select.addEventListener('mouseleave', ()=>{
-          select.style.backgroundColor =  '#fff'
-        })
-    
-    
-        const form = document.getElementById("query-form");
-    
-        form.style.display = "flex";
-        form.style.flexDirection = "row";
-        form.style.gap = "1rem";
-        form.style.alignItems = "center";
+            div.style.display = "flex";
+            div.style.position = "absolute";
+            div.style.top = rect.bottom + "px";
+            div.style.left = rect.left + "px";
+            div.style.position = "absolute";
+            div.style.color = '#27272A';
+            div.style.borderRadius = '5px';
+            div.style.alignItems = 'center';
+            div.style.height = "60px";
+            div.style.width = "580px"
+            div.style.zIndex = 10;
+            div.style.backgroundColor = '#F4F5F8';
+            div.style.fontFamily = 'Lato, sans-serif';
         
-    
-        const input = document.getElementById("tool-input");
-        input.style.height = '44px';
-        input.style.borderRadius = '.5rem';
-        input.style.border = "1px solid #5C5C62";
-        input.style.width = "240px";
-        input.addEventListener('focus', () => {
-          // Set the "outline" property of the focused input element to "none"
-          input.style.outline = 'none';
-        });
-    
         
-    
-        const submitBtn = document.getElementById("submit-btn");
-    
-        //style button
-        submitBtn.style.borderRadius = '.5rem';
-        submitBtn.style.backgroundColor =  '#202023';
-        submitBtn.style.color = "#FFFFFF";
-        submitBtn.style.fontWeight = '500';
-        submitBtn.style.border = "none";
-        submitBtn.style.height = '2.75rem';
-        submitBtn.style.width = "9rem";
-        // submitBtn.style.paddingLeft = '0.5rem';
-        submitBtn.style.overflowWrap = "wrap";
-        submitBtn.style.whiteSpace = "normal";
-        //handle submiting data
-        submitBtn.addEventListener('mouseenter', ()=>{
-          submitBtn.style.backgroundColor = '#5C5C62';
-        })
-        submitBtn.addEventListener('mouseleave', ()=>{
-          submitBtn.style.backgroundColor =  '#202023'
-        })
-        submitBtn.addEventListener('click', async(e)=> await handleSubmitRequest(e, selectedText) );
-    
-        select.addEventListener("change", ()=>{
-          let value = select.options[select.selectedIndex].value;
-    
-          if(value==="respond"){
-            //change value place holder for input
-            input.removeAttribute("required")
-            input.placeholder = "Please provide additional context"
-            submitBtn.value = "Respond to This"
-          }else{
-            input.setAttribute("required", "")
-            input.placeholder = "Add a title/subject of the email"
-            submitBtn.value = "Save Email as Template"
+            div.innerHTML = `
+              <div id="inner-div">
+                <button type="button" role="combobox" aria-controls="radix-:rr:" aria-expanded="false" aria-autocomplete="none" dir="ltr" data-state="closed" class="select_triger div-btn">
+                  <select name="requests" id="request-type">
+                    <option value="upload">Upload</option>
+                    <option value="respond">Respond</option>
+                  </select>
+                </button>
+                <form id="query-form">
+                  <input type="text" id="tool-input" placeholder="Add a title/subject of the email" required>
+                  </input>
+                  <input type="submit" id="submit-btn" class="div-btn" value="Save Email as Template">
+                </form>
+                <div id="close-btn" class="div-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 96 960 960" width="16">
+                    <path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"/>
+                  </svg>          
+                </div>
+              </div>`;
+            
+            div.addEventListener("mouseup", function (event) {
+              event.stopPropagation();
+            });
+            const innerDiv = document.getElementById("inner-div");
+            innerDiv.style.display = "flex";
+            innerDiv.style.justifyContent = 'space-between';
+            innerDiv.style.alignItems = 'center';
+            innerDiv.style.gap = "1rem";
+            innerDiv.style.padding = '.5rem';
+        
+            const select = document.getElementById("request-type");
+        
+            select.style.border = "none";
+            select.style.height = '44px';
+            select.style.borderRadius = ".5rem";
+            select.style.padding = "0 0.5rem";
+            select.style.fontWeight = '500';
+            select.addEventListener('focus', () => {
+              // Set the "outline" property of the focused input element to "none"
+              select.style.outline = 'none';
+            });
+            select.addEventListener('mouseenter', ()=>{
+              select.style.backgroundColor = '#D9D9D9';
+            })
+            select.addEventListener('mouseleave', ()=>{
+              select.style.backgroundColor =  '#fff'
+            })
+        
+        
+            const form = document.getElementById("query-form");
+        
+            form.style.display = "flex";
+            form.style.flexDirection = "row";
+            form.style.gap = "1rem";
+            form.style.alignItems = "center";
+            
+        
+            const input = document.getElementById("tool-input");
+            input.style.height = '44px';
+            input.style.borderRadius = '.5rem';
+            input.style.border = "1px solid #5C5C62";
+            input.style.width = "240px";
+            input.addEventListener('focus', () => {
+              // Set the "outline" property of the focused input element to "none"
+              input.style.outline = 'none';
+            });
+        
+            
+        
+            const submitBtn = document.getElementById("submit-btn");
+        
+            //style button
+            submitBtn.style.borderRadius = '.5rem';
+            submitBtn.style.backgroundColor =  '#202023';
+            submitBtn.style.color = "#FFFFFF";
+            submitBtn.style.fontWeight = '500';
+            submitBtn.style.border = "none";
+            submitBtn.style.height = '2.75rem';
+            submitBtn.style.width = "9rem";
+            // submitBtn.style.paddingLeft = '0.5rem';
+            submitBtn.style.overflowWrap = "wrap";
+            submitBtn.style.whiteSpace = "normal";
+            //handle submiting data
+            submitBtn.addEventListener('mouseenter', ()=>{
+              submitBtn.style.backgroundColor = '#5C5C62';
+            })
+            submitBtn.addEventListener('mouseleave', ()=>{
+              submitBtn.style.backgroundColor =  '#202023'
+            })
+            submitBtn.addEventListener('click', async(e)=> await handleSubmitRequest(e, selectedText) );
+        
+            select.addEventListener("change", ()=>{
+              let value = select.options[select.selectedIndex].value;
+        
+              if(value==="respond"){
+                //change value place holder for input
+                input.removeAttribute("required")
+                input.placeholder = "Please provide additional context"
+                submitBtn.value = "Respond to This"
+              }else{
+                input.setAttribute("required", "")
+                input.placeholder = "Add a title/subject of the email"
+                submitBtn.value = "Save Email as Template"
+              }
+            })
+          
+          
+            var selectTrigger = document.querySelector(".select_triger");
+        
+            selectTrigger.style.display = "flex";
+            selectTrigger.style.height = "2.25rem";
+            selectTrigger.style.padding = "0 0.875";
+            selectTrigger.style.borderRadius = "0.4rem";
+            selectTrigger.style.fontSize = "0.875rem";
+            selectTrigger.style.fontWeight = "500";
+            selectTrigger.style.gap = "0.5rem";
+            selectTrigger.style.placeItems = "center";
+            selectTrigger.style.background = "rgb(244 244 245)";
+            selectTrigger.style.color = "rgb(82 82 91)";
+            selectTrigger.style.transition = "0.15s ease-in-out";
+            selectTrigger.style.transitionProperty = "background, color, opacity";
+            selectTrigger.style.outline = "none";
+            selectTrigger.style.border = "none";
+        
+            document.getElementById("close-btn").addEventListener("click", removeDiv)
           }
-        })
-      
-      
-        var selectTrigger = document.querySelector(".select_triger");
-    
-        selectTrigger.style.display = "flex";
-        selectTrigger.style.height = "2.25rem";
-        selectTrigger.style.padding = "0 0.875";
-        selectTrigger.style.borderRadius = "0.4rem";
-        selectTrigger.style.fontSize = "0.875rem";
-        selectTrigger.style.fontWeight = "500";
-        selectTrigger.style.gap = "0.5rem";
-        selectTrigger.style.placeItems = "center";
-        selectTrigger.style.background = "rgb(244 244 245)";
-        selectTrigger.style.color = "rgb(82 82 91)";
-        selectTrigger.style.transition = "0.15s ease-in-out";
-        selectTrigger.style.transitionProperty = "background, color, opacity";
-        selectTrigger.style.outline = "none";
-        selectTrigger.style.border = "none";
-    
-        document.getElementById("close-btn").addEventListener("click", removeDiv)
+        
+          const buttons = document.querySelectorAll('.div-btn');
+        // loop through each button and apply styling
+          buttons.forEach(button => {
+            button.style.cursor = 'pointer';
+          });
+        }
       }
-    
-      const buttons = document.querySelectorAll('.div-btn');
-    // loop through each button and apply styling
-      buttons.forEach(button => {
-        button.style.cursor = 'pointer';
-      });
     }
-  }
-}
-
-document.addEventListener("mouseup", handleMouseUp);
-
-function copyToClipboard(e) {
-  const t = document.createElement("textarea");
-  t.value = e,
-  t.setAttribute("readonly", ""),
-  t.style.position = "absolute",
-  t.style.left = "-9999px",
-  document.body.appendChild(t),
-  t.select(),
-  document.execCommand("copy"),
-  document.body.removeChild(t)
+  })
+  .catch(error => {
+    // User is not authenticated logic
+    //do nothing
+  });
 }
 
 async function handleCopyResponse (e) {
@@ -404,4 +404,20 @@ function insertDiv() {
   div.innerHTML = "<span></span><button id='close-btn' style='float: right; margin: 5px;'>Close</button>";
   document.body.appendChild(div);
 }
+function isAuthenticated() {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get("authToken", function(items) {
+      const authToken = items.authToken;
+      if (authToken) {
+        // AuthToken exists, so user is authenticated
+        resolve(true);
+      } else {
+        // AuthToken does not exist, so user is not authenticated
+        reject(false);
+      }
+    });
+  });
+}
+
+document.addEventListener("mouseup", async(e)=> await handleMouseUp(e));
 insertDiv();
