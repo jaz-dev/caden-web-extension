@@ -63,7 +63,6 @@ body {
 #feedback-btn {
   width: 26px;
   text-align: center;
-  background-color: red;
 }
 #close-btn > span {
   position: relative;

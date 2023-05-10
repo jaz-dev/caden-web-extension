@@ -1,7 +1,7 @@
 const RESPOND_TYPE = "write-btn";
 const ASK_TYPE = "ask-btn";
-const URL = 'http://localhost:3001';
-// const URL = 'https://caden-server.herokuapp.com';
+// const URL = 'http://localhost:3001';
+const URL = 'https://caden-server.herokuapp.com';
 
 function getText() {
     return window.getSelection().toString()
@@ -331,10 +331,3 @@ isAuthenticated((isAuth)=>{
         showUnAuthenticatedContent();
     }
 })
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.selectedText) {
-        var selectedText = document.getElementById("selectedText");
-        // rest of your code to display the pop-up div with selected text
-        console.log('selected: ', selectedText)
-    }
-});
