@@ -82,7 +82,7 @@ async function fetchResponse(user, context, text){
   }
   try {
     setStatus("responding")
-    const response = await fetch(`${URL}/write/`, {
+    const response = await fetch(`${URL}/train/respond`, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
