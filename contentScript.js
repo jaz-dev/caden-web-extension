@@ -1,5 +1,4 @@
 console.log('caden ai content script loaded');
-// // const URL = 'http://localhost:3001';
 const URL = 'https://caden-server.herokuapp.com';
 
 function copyToClipboard(e) {
@@ -82,7 +81,7 @@ async function fetchResponse(user, context, text){
   }
   try {
     setStatus("responding")
-    const response = await fetch(`${URL}/train/respond`, {
+    const response = await fetch(`${URL}/write/email`, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -93,7 +92,7 @@ async function fetchResponse(user, context, text){
     if(response.status === 200){
       setStatus("respond")
       const data = await response.json();
-      return data.data.output;
+      return data.data;
     } else {
       return null
     }
