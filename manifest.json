@@ -1,7 +1,7 @@
 {
   "name": "Caden AI",
   "description": "We streamline the process of creating customer service responses, saving valuable time by allowing reps to generate them with ease.",
-  "permissions": ["storage", "activeTab", "scripting", "nativeMessaging"],
+  "permissions": ["storage", "activeTab", "scripting"],
   "version": "0.0.3",
   "manifest_version": 3,
   "icons": {
