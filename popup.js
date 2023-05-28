@@ -1,7 +1,7 @@
 const RESPOND_TYPE = "write-btn";
 const ASK_TYPE = "ask-btn";
-const URL = 'https://caden-server.herokuapp.com';
-
+// const URL = 'https://caden-server.herokuapp.com';
+const URL = "http://localhost:3000";
 function getText() {
     return window.getSelection().toString()
 }
@@ -13,7 +13,6 @@ function normalize(e) {
 function setStatus(e="waiting", id=RESPOND_TYPE, t=!0) {
     const p = document.getElementById(`${id}-p`);
     const s = document.getElementById(`${id}-svg`);
-
     if(p !== null){
         p.textContent = {
             waiting: id === RESPOND_TYPE ? "Respond" : "Ask GPT",
@@ -213,7 +212,10 @@ async function handleSignOut (e) {
 async function handleCopyResponse (e) {
     const t = document.getElementById("copy-reply").textContent;
     setTimeout((()=>{
-        document.getElementById("copy-btn").textContent = "Copy 📄"
+        document.getElementById("copy-btn").innerHTML = `<p>Copy Again</p>
+            <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 96 960 960" width="16">
+            <path d="M200 976q-33 0-56.5-23.5T120 896V376q0-17 11.5-28.5T160 336q17 0 28.5 11.5T200 376v520h400q17 0 28.5 11.5T640 936q0 17-11.5 28.5T600 976H200Zm160-160q-33 0-56.5-23.5T280 736V256q0-33 23.5-56.5T360 176h360q33 0 56.5 23.5T800 256v480q0 33-23.5 56.5T720 816H360Zm0-80h360V256H360v480Zm0 0V256v480Z" transform="scale(0.66667) translate(12 72)"></path>
+            </svg>`
     }
     ), 3e3),
     copyToClipboard(t),

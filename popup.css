@@ -360,3 +360,12 @@ button[data-active="true"]:before {
     width: 22rem;
   }
 } 
+
+.highlight-div{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3rem;
+  color: white;
+  border-radius: 5;
+}
