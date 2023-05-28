@@ -1,7 +1,6 @@
 const RESPOND_TYPE = "write-btn";
 const ASK_TYPE = "ask-btn";
-// const URL = 'https://caden-server.herokuapp.com';
-const URL = "http://localhost:3000";
+const URL = 'https://caden-server.herokuapp.com';
 function getText() {
     return window.getSelection().toString()
 }
@@ -199,7 +198,7 @@ async function handleSignIn (e) {
         }
     } catch(err) {
         console.error(err);
-        setAuthError(data.error.message);
+        setAuthError(err.message);
     }
 }
 async function handleSignOut (e) {
