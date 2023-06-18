@@ -1,6 +1,6 @@
 console.log('caden ai content script loaded');
 const URL = 'https://caden-server.herokuapp.com';
-
+// const URL = 'http://localhost:3001';
 function copyToClipboard(e) {
   const t = document.createElement("textarea");
   t.value = e,
@@ -156,7 +156,6 @@ async function handleMouseUp(event) {
             div.style.position = "absolute";
             div.style.top = rect.bottom + "px";
             div.style.left = rect.left + "px";
-            div.style.position = "absolute";
             div.style.color = '#27272A';
             div.style.borderRadius = '5px';
             div.style.alignItems = 'center';
@@ -391,8 +390,12 @@ function appendDiv(type, text){
 function removeInnerDiv(){
   const container = document.getElementById("added-div")
   const div = document.getElementById("div-notifs");
-  
   container.removeChild(div)
+}
+
+function checkZME(){
+  const toolbar = document.querySelector(".zmetoolbar");
+  console.log('toolbar: ', toolbar);
 }
 
 function insertDiv() {
@@ -417,6 +420,5 @@ function isAuthenticated() {
     });
   });
 }
-
 document.addEventListener("mouseup", async(e)=> await handleMouseUp(e));
 insertDiv();
